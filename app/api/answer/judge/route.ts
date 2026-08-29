@@ -1,0 +1,2 @@
+import { NextRequest,NextResponse } from 'next/server'; import { getSession,saveSession } from '@/lib/storage'; import { judgeAnswer } from '@/lib/ai';
+export async function POST(req:NextRequest){const id=new URL(req.url).searchParams.get('session')||'';const s=await getSession(id);if(!s)return NextResponse.json({error:'not found'},{status:404});const {question,answer}=await req.json();const result=await judgeAnswer(question,answer);await saveSession(id,{...s,grade1Answers:[...(s.grade1Answers||[]),{question,answer,...result}]});return NextResponse.json(result)}

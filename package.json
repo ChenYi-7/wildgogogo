@@ -1,0 +1,8 @@
+{
+  "name": "rural-nature-classroom",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {"dev":"node scripts/dev.mjs","build":"next build","start":"next start","lint":"next lint"},
+  "dependencies": {"@types/node":"^20.14.10","@types/react":"^18.3.3","@types/react-dom":"^18.3.0","autoprefixer":"^10.4.19","framer-motion":"^11.3.19","next":"14.2.5","openai":"^4.56.0","postcss":"^8.4.40","react":"^18.3.1","react-dom":"^18.3.1","replicate":"^0.32.0","tailwindcss":"^3.4.7","tsx":"^4.16.2","typescript":"^5.5.4"},
+  "devDependencies": {}
+}

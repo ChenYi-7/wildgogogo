@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.next-dev/
+.env*
+tsconfig.tsbuildinfo
+data/sessions/*.json
+public/uploads/images/*
+public/uploads/stickers/*
+public/uploads/backgrounds/*
+!public/uploads/stickers/seed.svg

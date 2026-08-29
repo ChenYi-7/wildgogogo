@@ -1,0 +1,6 @@
+export type Theme = '植物与环境'|'昆虫的秘密'|'水的旅行'|'土壤的奥秘'|'天气实验室';
+export type SessionStatus = 'prep'|'preview'|'monitor'|'collage'|'explain'|'journal'|'ended';
+export interface Sticker { id:string; name:string; imageUrl:string; sourceUrl?:string; stylizedImageUrl?:string; area?:string; x?:number; y?:number; placed?:boolean; analysis?:any; }
+export interface Evidence { id:string; group:number; imageUrl:string; createdAt:string; label?:string; stylizedImageUrl?:string; analysis?:{name:string; category:string; confidence:number; description?:string; areaSuggestion?:string; stickerPrompt?:string}; }
+export interface MapRegion { id:string; name:string; x:number; y:number; description?:string; color?:string; }
+export interface Session { id:string; createdAt:string; theme?:Theme; sceneImage?:string; backgroundImage?:string; stylizedSceneImage?:string; mapRegions?:MapRegion[]; status:SessionStatus; task?:{commonQuestion:string; grade1:{title:string; target:string; steps:string[]}; grade4:{reading:string[]; questions:{question:string; options:string[]; answer:number}[]}}; evidences:Evidence[]; stickers:Sticker[]; placements:Sticker[]; grade4Answers?:number[]; grade1Answers?:{question:string; answer:string; correct:boolean}[]; explanations?:{name:string; relation:string; detail:string; evidenceType:string}[]; }
