@@ -54,3 +54,7 @@ REPLICATE_API_TOKEN=...
 ```
 
 目标架构落地时，将以上配置替换为国内模型供应商的统一适配配置，并按服务拆分密钥和超时策略。
+
+## 项目成员
+- **组长**：Estelle Ma
+- **核心组员**：Chenyi Nie, Mona Li, Hangning Liu
