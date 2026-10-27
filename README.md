@@ -1,50 +1,52 @@
-# 乡村复式自然课堂
+# Rural Mixed-Grade Nature Classroom
 
-面向“一位教师同时组织一年级和四年级”的自然科学课堂工具。系统把校园真实场景、低年级采集、高年级推理和教师评价串成一条可复用的课程工作流。
+**English** · [中文](README.zh-CN.md)
 
-## 当前代码框架（原型实现）
+A natural-science classroom tool for one teacher working with first- and fourth-grade students at the same time. It connects real campus settings, younger students' evidence collection, older students' reasoning, and teacher assessment into a reusable lesson workflow.
 
-当前仓库是一个前后端同仓的 Next.js 原型，主要用于验证课堂流程和交互：
+## Current codebase (prototype implementation)
 
-- `app/`：Next.js 14 App Router 页面和服务端 API。页面覆盖首页、教师准备/预览/监控、四年级预习/拼贴/讲解/日志，以及一年级手机采集/标识牌问答。
-- `components/`：通用 UI、动效和校园地图组件（`ui.tsx`、`Map.tsx`）。
-- `lib/types.ts`：课堂会话、任务、证据、地图区域、贴纸和讲解结果的数据类型。
-- `lib/storage.ts`：使用 Node.js `fs/promises` 读写本地会话 JSON，并保存图片、贴纸和背景素材。
-- `lib/ai.ts`：封装 OpenAI-compatible 多模态调用、视觉区域识别、任务生成、证据识别、答案判断、关系讲解和图片风格化。
-- `app/api/`：会话管理、任务生成/轮询、证据上传、地图分析、贴纸生成、拼贴提交和答案评议等接口。
-- `data/sessions/`、`public/uploads/`：原型阶段的本地数据和素材目录。
+This repository currently contains a Next.js prototype with the frontend and backend in one codebase, primarily for validating classroom workflows and interactions:
 
-核心课堂链路为：新建课堂 → 教师选择主题并上传场景 → AI 生成双年级任务 → 教师预览发布 → 一年级手机采集证据 → 四年级预习答题与拖拽拼贴 → AI 生成自然关系讲解 → 自然日志沉淀。
+- `app/`: Next.js 14 App Router pages and server-side APIs. Pages cover the home screen; teacher preparation, preview, and monitoring; fourth-grade preparation, collage-making, explanations, and journals; and first-grade mobile evidence collection and sign-based questions.
+- `components/`: Shared UI, animations, and campus map components (`ui.tsx`, `Map.tsx`).
+- `lib/types.ts`: Types for classroom sessions, tasks, evidence, map regions, stickers, and explanation results.
+- `lib/storage.ts`: Reads and writes local session JSON using Node.js `fs/promises`, and stores images, stickers, and background assets.
+- `lib/ai.ts`: Wraps OpenAI-compatible multimodal calls, visual region recognition, task generation, evidence recognition, answer assessment, explanations of relationships in nature, and image stylization.
+- `app/api/`: Endpoints for session management, task generation and polling, evidence uploads, map analysis, sticker generation, collage submission, and answer assessment.
+- `data/sessions/`, `public/uploads/`: Local data and asset directories used by the prototype.
 
-### 原型运行方式
+The core classroom journey is: create a class → the teacher selects a theme and uploads a scene → AI generates tasks for both grades → the teacher previews and publishes them → first-grade students collect evidence on phones → fourth-grade students answer preparatory questions and build collages by dragging and dropping → AI explains relationships in nature → the results are saved in nature journals.
 
-原型目前仍由 Next.js 提供页面和 API：
+### Run the prototype
+
+Next.js currently serves both the pages and APIs:
 
 ```bash
 npm install
 npm run dev
 ```
 
-默认访问 `http://localhost:3000`。AI 原型调用通过 OpenAI-compatible 网关完成，图片风格化可使用 Replicate；未配置密钥时，部分能力会返回可演示的降级结果。
+Open `http://localhost:3000` by default. AI calls use an OpenAI-compatible gateway, and image stylization can use Replicate. Without configured keys, some features return demonstration fallback results.
 
-## 目标技术方案（替换版）
+## Target architecture (planned replacement)
 
-后续产品采用 React + Python 的全栈架构，以国内可用大模型为 AI 底座，通过结构化工作流实现“场景理解—任务拆分—学生采集—成果评议—课程沉淀”。
+The planned product uses a React + Python full-stack architecture, with models available in mainland China as its AI foundation. A structured workflow connects scene understanding, task breakdown, student evidence collection, assessment, and reusable lesson records.
 
-- **前端**：React + TypeScript + Vite；采用 Tailwind CSS / Ant Design，统一适配教师端、平板和手机端。学生端遵循少屏幕、少输入、大按钮和低认知负担的交互原则。
-- **后端**：Python + FastAPI。按领域拆分课程任务编排、场景与安全评估、图片素材处理、AI 科学伙伴评议、自然日志等服务；通过清晰的 REST/JSON 接口连接教师端和学生端。
-- **AI 与视觉**：接入 DeepSeek、豆包、通义千问等国内可用模型，支持图像理解、目标提取、场景区域识别、卡通素材生成和结构化推理。模型输出统一约束为 JSON Schema，便于校验、重试、审计和教师修改。
-- **数据与部署**：开发和弱网/单机模式使用 SQLite；多人协作和正式部署使用 PostgreSQL。原始照片、生成素材和课程附件进入对象存储；服务通过 Docker 云部署，并预留离线缓存、断点续传和单机备用方案。
-- **工程约束**：AI 结果必须经过 schema 校验和安全过滤；任务、评价和对外发布均保留教师审核节点；学生端尽量使用选择、拍照和拖拽，减少长文本输入；关键课堂状态支持幂等写入和恢复。
+- **Frontend:** React + TypeScript + Vite, with Tailwind CSS / Ant Design, supporting teacher screens, tablets, and phones. Student interfaces prioritize fewer screens, minimal typing, large buttons, and low cognitive load.
+- **Backend:** Python + FastAPI. Domain services cover lesson task orchestration, scene and safety assessment, image processing, assessment by an AI science companion, and nature journals. Teacher and student clients connect through clear REST/JSON interfaces.
+- **AI and vision:** Planned integrations include DeepSeek, Doubao, Qwen, and other models available in mainland China, supporting image understanding, object extraction, scene-region recognition, cartoon asset generation, and structured reasoning. Outputs are constrained by JSON Schema to support validation, retries, auditing, and teacher edits.
+- **Data and deployment:** SQLite for development, weak-network, and single-machine modes; PostgreSQL for collaboration and production deployment. Original photos, generated assets, and lesson attachments go into object storage. Services are deployed to the cloud with Docker, with provisions for offline caching, resumable uploads, and a single-machine fallback.
+- **Engineering constraints:** AI results must pass schema validation and safety filtering. Teacher review remains part of task publication, assessment, and external publication. Student interactions favor selection, photography, and drag-and-drop over long text input. Key classroom state supports idempotent writes and recovery.
 
-## 从当前原型到目标方案的迁移重点
+## Migration priorities
 
-1. 将 `app/` 中的页面迁移为 Vite React 前端，保留现有课堂流程和组件交互。
-2. 将 `app/api/` 和 `lib/ai.ts` 的能力迁移到 FastAPI 领域服务，统一请求/响应模型和 JSON Schema。
-3. 将本地 JSON 会话替换为 SQLite/PostgreSQL，将 `public/uploads/` 替换为对象存储适配层。
-4. 增加教师审核、权限、操作日志、弱网缓存与任务重试机制，再通过 Docker 统一部署。
+1. Move pages from `app/` to a Vite React frontend while retaining existing classroom workflows and component interactions.
+2. Move capabilities from `app/api/` and `lib/ai.ts` into FastAPI domain services, with consistent request/response models and JSON Schema.
+3. Replace local JSON sessions with SQLite/PostgreSQL, and replace `public/uploads/` with an object-storage adapter.
+4. Add teacher review, permissions, operation logs, weak-network caching, and task retries, then standardize deployment with Docker.
 
-## 主要环境变量（原型阶段）
+## Main environment variables (prototype)
 
 ```env
 OPENAI_API_KEY=...
@@ -53,8 +55,9 @@ OPENAI_MODEL=...
 REPLICATE_API_TOKEN=...
 ```
 
-目标架构落地时，将以上配置替换为国内模型供应商的统一适配配置，并按服务拆分密钥和超时策略。
+When implementing the target architecture, replace these settings with a unified adapter configuration for the chosen mainland-China model providers, and separate keys and timeout policies by service.
 
-## 项目成员
-- **组长**：Estelle Ma
-- **核心组员**：Chenyi Nie, Mona Li, Hangning Liu
+## Team
+
+- **Team Lead:** Estelle Ma
+- **Core members:** Chenyi Nie, Mona Li, Hangning Liu
